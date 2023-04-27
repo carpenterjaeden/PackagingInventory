@@ -16,7 +16,7 @@ void initRFID(){
     Wire.write(0x00); // Idle mode
 
     Wire.write(0x0C); // TxControl register
-    Wire.write(0x00); // Force 100% modulation depth
+    Wire.write(0x00); // Normal operation
 
     Wire.write(0x14); // TModeReg register
     Wire.write(0x80); // Set timer to start when data is received
@@ -43,12 +43,11 @@ void RxIRQ_ISR() {
 
     // checks if the interrupt is from the RFID sensor
     if (val == 1) {
-        unsigned int data[16];
         readRFIDTag();
     }
 
 }
 
 void readRFIDTag() {
-    
+
 }
