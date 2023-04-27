@@ -9,25 +9,20 @@ void initRFID(){
     // initialize I2C interface
     Wire.begin();
 
-    // Configure the RC522 module to be on "standby" (waiting for tag)
-    Wire.beginTransmission(0x28);
+    writeRegister(0x01, 0x00);
+    // CommandReg register, Idle mode
 
-    Wire.write(0x01); // CommandReg register
-    Wire.write(0x00); // Idle mode
+    writeRegister(0x0C, 0x00);
+    // TxControl register, Normal operation
 
-    Wire.write(0x0C); // TxControl register
-    Wire.write(0x00); // Normal operation
+    writeRegister(0x014, 0x80);
+    // TModeReg register, Set timer to start when data is received
 
-    Wire.write(0x14); // TModeReg register
-    Wire.write(0x80); // Set timer to start when data is received
+    writeRegister(0x2A, 0x00);
+    // TxASKReg register, Disables "ask" prompt
 
-    Wire.write(0x2A); // TxASKReg register
-    Wire.write(0x00); // Disables "ask" prompt
-
-    Wire.write(0x02); // ComIEnReg register
-    Wire.write(0x01); // Enables RxIRQ interrupt
-
-    Wire.endTransmission();
+    writeRegister(0x02, 0x01);
+    // ComIEnReg register, Enables RxIRQ interrupt
 }
 
 void RxIRQ_ISR() {
@@ -48,6 +43,27 @@ void RxIRQ_ISR() {
 
 }
 
-void readRFIDTag() {
+unsigned int readRFIDTag() {
+    writeRegister(0x01, 0x00);
+    // set address to CommandReg
+    // reset to Idle Mode
+    
+    writeRegister(0x04, 0x7F);
+    // set address to ComIrqReg
+    // Clear interrupt request bits
+    
+    writeRegister(0x0A, 0x80);
+    // set address to the FIFO Level Register
+    // flush the FIFO buffer to remove old data
 
+
+return 0;
+}
+
+
+void writeRegister(unsigned int reg, unsigned int val) {
+    Wire.beginTransmission(0x28); // opens I2C with RC522 address (0x28)
+    Wire.write(reg);    // loads register address
+    Wire.write(val);    // loads value into address
+    Wire.endTransmission(); // ends transmission to RC522
 }
