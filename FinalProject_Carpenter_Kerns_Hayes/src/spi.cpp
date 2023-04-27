@@ -17,12 +17,9 @@
 void SPI_MASTER_Init() {
     // set MOSI,SCK,and SS direction to outputs
     DDR_SPI = (1 << DD_MOSI)| (1 << DD_SCK) | (1 << DD_SS);
-
     // note this program does not use MISO line. IT only writes to device
-
     // set SS high initially (chip select off)
     SPI_PORT  |= (1 << SPI_SS_BIT);
-
     // enable SPI, master mode, CPOL, CPHA, default clock and fosc/128
     // datasheet says sample on rising edge CPOL = 1 CPHA =1
     SPCR  |= (1 <<SPE)| (1 << MSTR) | (1 << CPOL) | (1 << CPHA ) | (1 << SPR1) | (1 << SPR0);
@@ -37,6 +34,12 @@ void SPI_MASTER_Init() {
         wait_for_complete; // wait for flag to raise
         SPI_PORT |= (1 << SPI_SS_BIT); // disable chip select to end SPI frame
     }
+
+
+
+
+
+/* 8x8 LED matrix display functions
     //Code for displaying a frown on the 8x8 LED matrix
     void displayFrown(){
     write_execute(1, 0b00000000);
@@ -59,3 +62,4 @@ void SPI_MASTER_Init() {
     write_execute(7, 0b01000010);
     write_execute(8, 0b00000000);
     }
+*/

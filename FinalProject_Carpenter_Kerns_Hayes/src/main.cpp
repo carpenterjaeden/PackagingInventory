@@ -1,16 +1,12 @@
-// Author: Jaeden Carpenter
-// Net ID: carpenterjaeden
+// Author: Jaeden Carpenter, Sam Kerns, Malcolm Hayes
+// Net ID: carpenterjaeden , s4k3 , malcolmhayes
 // Date: 3/20/23
-// Assignment: Lab 3
+// Assignment: Final Project
 //----------------------------------------------------------------------//
-
-// Description: This file contains a programmatic overall description of the
-// program. It should never contain assignments to special function registers
-// for the exception key one-line code such as checking the state of the pin.
 //
-// Requirements:
+// 
+// 
 //----------------------------------------------------------------------//
-
 
 
 
@@ -51,6 +47,7 @@ int main(){
   
 
 	while (1) {
+
 
     switch (matrix){
       case smile:
