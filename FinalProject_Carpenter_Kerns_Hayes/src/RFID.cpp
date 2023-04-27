@@ -4,6 +4,10 @@
 #include <Wire.h>
 #include <Arduino.h>
 
+/*      RFID DataSheet : 
+        https://www.nxp.com/docs/en/data-sheet/MFRC522.pdf
+*/
+
 
 void initRFID(){
     // initialize I2C interface
