@@ -17,7 +17,7 @@
 #include "pwm.h"
 #include "I2C.h"
 #include "spi.h"
-
+#include "RFID.h"
 // defines
 
 
@@ -41,10 +41,15 @@ int main(){
   initSwitchPD0();
   InitI2C();
   SPI_MASTER_Init();
+  initRFID();
   Serial.begin(9600);  
 	
   sei(); // Enable global interrupts.
   
+
+  
+  attachInterrupt(/*RC522 INTRPT PIN*/2, RxIRQ_ISR, FALLING); // attaches the RFID ISR to the interrupt pin on the sensor
+  // the interrupt pin should be the same RxIRQ_PIN in RFID.cpp under RxIRQ_ISR();
 
 	while (1) {
 
