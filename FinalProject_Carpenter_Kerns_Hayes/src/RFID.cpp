@@ -98,8 +98,8 @@ unsigned int readRegister(unsigned int reg) {
     Wire.write(0x80); // enable read mode
     Wire.endTransmission();
 
-    Wire.requestFrom(0x28, 1);
-    unsigned int val = Wire.read();
+    Wire.requestFrom(0x28, 1); // requests data to be read from the RC522
+    unsigned int val = Wire.read(); // actually reads the value into "val"
     return val;
 }
 
