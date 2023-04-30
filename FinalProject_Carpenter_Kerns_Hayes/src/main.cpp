@@ -38,7 +38,7 @@ int main(){
   
   initTimer1();
   initPWMTimer3();
-  initSwitchPD0();
+  initSwitchPD2();
   InitI2C();
   SPI_MASTER_Init();
   initRFID();
