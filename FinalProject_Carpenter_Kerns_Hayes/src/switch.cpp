@@ -11,18 +11,18 @@
 #include <avr/io.h>
 
 /*
- * Initializes pull-up resistor on PD0 and sets it into input mode
+ * Initializes pull-up resistor on PD2 and sets it into input mode
  */
-void initSwitchPD0(){
+void initSwitchPD2(){
   //data direction
-DDRD &= ~(1 << PD0);
+DDRD &= ~(1 << PD2);
 //port
-PORTD |= (1 << PD0);
+PORTD |= (1 << PD2);
 
-//Set the external interrupt control register A to 11 for INT0
-EICRA |= (1<<ISC00) | (1<<ISC01);
-//turn on INT0 in the external interrupt mask register to enable it
-EIMSK |= (1<<INT0);
+//Set the external interrupt control register A to 11 for INT2
+EICRA |= (1<<ISC20) | (1<<ISC21);
+//turn on INT2 in the external interrupt mask register to enable it
+EIMSK |= (1<<INT2);
 
 
 
