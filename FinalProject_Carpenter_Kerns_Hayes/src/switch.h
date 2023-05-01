@@ -5,6 +5,6 @@
 #define SWITCH_H
 
 void initSwitchPD2();
-void button_pressed();
+
 
 #endif
