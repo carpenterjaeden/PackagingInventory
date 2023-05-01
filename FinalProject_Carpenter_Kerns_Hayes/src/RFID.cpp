@@ -34,7 +34,17 @@ void initRFID(){
     pinMode(PINA0, INPUT_PULLUP);
     // sets PINA0 as the RxIRQ_PIN
     
-    attachInterrupt(digitalPinToInterrupt(PINA0), RxIRQ_ISR, RISING);
+    //attachInterrupt(digitalPinToInterrupt(PINA0), RxIRQ_ISR, RISING);
+    //data direction
+DDRD &= ~(1 << PD3);
+//port
+PORTD |= (1 << PD3);
+
+//Set the external interrupt control register A to 11 for INT2
+EICRA |= (1<<ISC30) | (1<<ISC31);
+//turn on INT2 in the external interrupt mask register to enable it
+EIMSK |= (1<<INT3);
+
 
 }
 
@@ -91,6 +101,7 @@ void readRFIDTag() {
             Serial.print(buffer[i], HEX); // prints tag ID to serial monitor in HEX format
         }
     }
+
     Serial.println();
 }
 
