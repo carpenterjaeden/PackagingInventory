@@ -27,6 +27,10 @@ void initRFID(){
 
     writeRegister(0x02, 0x01);
     // ComIEnReg register, Enables RxIRQ interrupt
+
+    pinMode(PINA0, INPUT_PULLUP);
+    // sets PINA0 as the RxIRQ_PIN
+
 }
 
 void RxIRQ_ISR() {
@@ -38,7 +42,7 @@ void RxIRQ_ISR() {
     // read output from GPIO
     Wire.requestFrom(0x28, 1, true);
     int val = Wire.read();
-    val = (val >> RxIRQ_PIN) & 0x01; // RxIRQ_PIN is the pin on the microcontroller
+    val = (val >> PINA0) & 0x01; // assigns val with the value from the sensor's interrupt pin
 
     // checks if the interrupt is from the RFID sensor
     if (val == 1) {
