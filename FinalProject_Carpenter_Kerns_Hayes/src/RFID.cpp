@@ -12,63 +12,45 @@
 volatile bool tag = false;
 
 void initRFID(){
-    // initialize I2C interface (SDA and SCL pins)
+
     Wire.begin();
 
     writeRegister(0x01, 0x00);
     // CommandReg register, Idle mode
 
-    writeRegister(0x0C, 0x00);
+    writeRegister(0x14, 0x00);
     // TxControl register, Normal operation
 
-    writeRegister(0x014, 0x80);
+    writeRegister(0x012, 0x80);
     // TModeReg register, Set timer to start when data is received
 
-    writeRegister(0x2A, 0x00);
+    writeRegister(0x15, 0x00);
     // TxASKReg register, Disables "ask" prompt
 
-    writeRegister(0x02, 0x01);
+
+    writeRegister(0x02, 0x05);
     // ComIEnReg register, Enables RxIRQ interrupt
-    
-    pinMode(PORTH6, OUTPUT);
-    digitalWrite(PORTH6, LOW);
+
+    DDRH &= ~(1 << PH6);
+//port
+    PORTH &= ~(1 << PH6);
     // holds RST pin low while interrupt pin is initialized (RST is connected to pin9 / H6)
 
-    pinMode(PORTD3, INPUT_PULLUP);
-    //sets PIND3 as the RxIRQ_PIN
+
     
-    //attachInterrupt(PORTD3, RxIRQ_ISR, FALLING);
     //data direction
-// DDRD &= ~(1 << PD3);
-// //port
-// PORTD |= (1 << PD3);
-
-// //Set the external interrupt control register A to 11 for INT2
-// EICRA |=  (1<<ISC31);
-// EICRA &= ~(1<<ISC30);
-// //turn on INT2 in the external interrupt mask register to enable it
-// EIMSK |= (1<<INT3);
-
-}
-
-void RxIRQ_ISR() {
-    // set address to GPIO (general purpose input output)
-    return;
-    Wire.beginTransmission(0x28);
-    Wire.write(0x09);
-    Wire.endTransmission(false);
-
-    // read output from GPIO
-    Wire.requestFrom(0x28, 1, true);
-    int val = Wire.read();
-    val = (val >> PORTD3) & 0x01; // assigns val with the value from the sensor's interrupt pin
-
-    // checks if the interrupt is from the RFID sensor
-    if (val == 1) {
-        readRFIDTag();
-    }
+DDRD &= ~(1 << PD3);
+//port
+PORTD |= (1 << PD3);
+    
+//Set the external interrupt control register A to 11 for INT2
+EICRA |=  (1<<ISC31);
+EICRA &= ~(1<<ISC30);
+//turn on INT2 in the external interrupt mask register to enable it
+EIMSK |= (1<<INT3);
 
 }
+
 
 void readRFIDTag() {
     Serial.begin(9600);

@@ -19,13 +19,17 @@
 #include "I2C.h"
 #include "spi2.h"
 #include "RFID.h"
+#include <MFRC522.h>
+ 
+#define SS_PIN PORTB0
+#define RST_PIN PORTH6
+MFRC522 mfrc522(SS_PIN, RST_PIN);
 // defines
 
 
 /*
  * Define a set of states that can be used in the state machine using an enum.
  */
-void button_pressedISR();
 typedef enum {incoming, outgoing} states;
 states matrix = incoming;
 
@@ -34,7 +38,8 @@ states matrix = incoming;
 //define global variable for debounce states
 volatile debounce dbState = wait_press;
 
-volatile unsigned int num = 0;
+unsigned int num = 0;
+
 
 
 int main(){
@@ -59,7 +64,14 @@ write_execute(0x0B, 0x07); //scanning all rows and columns
 write_execute(0x0C, 0x01); //set shutdown register to normal operation (0x01)
 write_execute(0x0F, 0x00); //display test register - set to normal operation
 
+
+
 	while (1) {
+
+
+    if (mfrc522.PICC_IsNewCardPresent()){
+      num++;
+    }
 
     switch (matrix){
       case incoming:  // object is entering into the inventory
@@ -107,11 +119,6 @@ write_execute(0x0F, 0x00); //display test register - set to normal operation
 }
 
 
-//Pin change interrupt: INT0 uses PORTD0
-// ISR(INT3_vect){
-//   Serial.println("Tag");
-//    readRFIDTag();
-// }
 
 ISR(INT2_vect){
 
