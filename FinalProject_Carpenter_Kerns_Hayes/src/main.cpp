@@ -24,10 +24,9 @@
 /*
  * Define a set of states that can be used in the state machine using an enum.
  */
-typedef enum {smile, frown} states;
-states matrix = smile;
+typedef enum {incoming, outgoing} states;
+states matrix = incoming;
 
-  boolean muteflag = 0;
 
   typedef enum {wait_press, debounce_press, wait_release, debounce_release} debounce;
 //define global variable for debounce states
@@ -55,11 +54,14 @@ int main(){
 
 
     switch (matrix){
-      case smile:
+      case incoming:  // object is entering into the inventory
+        displayIncoming();
       break;
-      case frown:
+      case outgoing: // object is being removed from inventory
+        displayOutgoing();
       break;
       default:
+        matrix = incoming;
       break;
     }
 
@@ -82,9 +84,11 @@ int main(){
     case debounce_release:
     delayMs(1);
     dbState = wait_press;
-    //if frown, mute flag high
-    if (matrix == frown) {
-      muteflag = 1;
+    //switches states
+    if (matrix == outgoing) {
+      matrix = incoming;
+    } else {
+      matrix = outgoing;
     }
     break;
 
