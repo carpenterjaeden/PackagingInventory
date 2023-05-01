@@ -12,6 +12,7 @@
 
 #include <Arduino.h>
 #include <avr/io.h>
+#include <Wire.h>
 #include "switch.h"
 #include "timer.h"
 #include "pwm.h"
@@ -33,21 +34,25 @@ states matrix = incoming;
 volatile debounce dbState = wait_press;
 
 int main(){
+  Serial.begin(9600);  
+  sei(); // Enable global interrupts.
 
-  
+  initRFID();
   initTimer1();
   initPWMTimer3();
   initSwitchPD2();
+
   initI2C();
   SPI_MASTER_Init();
-  initRFID();
-  Serial.begin(9600);  
+
+
+ // attachInterrupt(digitalPinToInterrupt(PINA0), ISR, RISING);
+    // attaches PINA0 to trigger the RxIRQ_ISR() function
 	
-  sei(); // Enable global interrupts.
 
 
 	while (1) {
-
+    displayIncoming();
 
     switch (matrix){
       case incoming:  // object is entering into the inventory
@@ -95,8 +100,22 @@ int main(){
 }
 
 
-//Pin change interrupt: INT0 uses PORTD0
+// Pin change interrupt: INT0 uses PORTD0
 ISR(INT0_vect){
+   // set address to GPIO (general purpose input output)
+    Wire.beginTransmission(0x28);
+    Wire.write(0x0A);
+    Wire.endTransmission(false);
+
+    // read output from GPIO
+    Wire.requestFrom(0x28, 1, true);
+    int val = Wire.read();
+    val = (val >> PINA0) & 0x01;
+
+    // checks if the interrupt is from the RFID sensor
+    if (val == 1) {
+        readRFIDTag();
+    }
 
 //if INT0 is triggered for press
 if (dbState == wait_press){
@@ -107,12 +126,7 @@ else if (dbState == wait_release){
   //change motor state to counting
   dbState = debounce_release;
 }
-
-
-
 }
-
-
 
 
 /* READ COORD FROM ACC using I2C
