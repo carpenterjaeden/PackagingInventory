@@ -10,7 +10,7 @@
 
 
 void initRFID(){
-    // initialize I2C interface
+    // initialize I2C interface (SDA and SCL pins)
     Wire.begin();
 
     writeRegister(0x01, 0x00);
@@ -30,6 +30,8 @@ void initRFID(){
 
     pinMode(PINA0, INPUT_PULLUP);
     // sets PINA0 as the RxIRQ_PIN
+    attachInterrupt(digitalPinToInterrupt(PINA0), RxIRQ_ISR, RISING);
+    // attaches PINA0 to trigger the RxIRQ_ISR() function
 
 }
 
