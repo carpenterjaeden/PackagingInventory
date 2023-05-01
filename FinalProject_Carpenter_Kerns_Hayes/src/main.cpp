@@ -17,7 +17,7 @@
 #include "timer.h"
 #include "pwm.h"
 #include "I2C.h"
-#include "spi.h"
+#include "spi2.h"
 #include "RFID.h"
 // defines
 
@@ -112,18 +112,19 @@ write_execute(0x0F, 0x00); //display test register - set to normal operation
 //   Serial.println("Tag");
 //    readRFIDTag();
 // }
-//   ISR(INT2_vect){
 
-//     //if INT0 is triggered for press
-// if (dbState == wait_press){
-//   dbState = debounce_press;
-// }
-// //if INT0 is triggered for release
-// else if (dbState == wait_release){
-//   //change motor state to counting
-//   dbState = debounce_release;
-// }
-// }
+ISR(INT2_vect){
+
+    //if INT0 is triggered for press
+if (dbState == wait_press){
+  dbState = debounce_press;
+}
+//if INT0 is triggered for release
+else if (dbState == wait_release){
+  //change motor state to counting
+  dbState = debounce_release;
+}
+}
   
 
 

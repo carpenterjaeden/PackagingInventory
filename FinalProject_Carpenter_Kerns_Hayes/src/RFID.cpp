@@ -37,7 +37,7 @@ void initRFID(){
     pinMode(PORTD3, INPUT_PULLUP);
     //sets PIND3 as the RxIRQ_PIN
     
-    attachInterrupt(PORTD3, RxIRQ_ISR, FALLING);
+    //attachInterrupt(PORTD3, RxIRQ_ISR, FALLING);
     //data direction
 // DDRD &= ~(1 << PD3);
 // //port
