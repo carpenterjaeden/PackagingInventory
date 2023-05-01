@@ -51,7 +51,10 @@ int main(){
 
  // attachInterrupt(digitalPinToInterrupt(PINA0), ISR, RISING);
     // attaches PINA0 to trigger the RxIRQ_ISR() function
-	
+write_execute(0x0A, 0x08); //brightness control
+write_execute(0x0B, 0x07); //scanning all rows and columns
+write_execute(0x0C, 0x01); //set shutdown register to normal operation (0x01)
+write_execute(0x0F, 0x00); //display test register - set to normal operation
 
 
 	while (1) {
