@@ -34,26 +34,27 @@ void initRFID(){
     pinMode(PINA0, INPUT_PULLUP);
     // sets PINA0 as the RxIRQ_PIN
     
+    attachInterrupt(digitalPinToInterrupt(PINA0), RxIRQ_ISR, RISING);
 
 }
 
-// void RxIRQ_ISR() {
-//     // // set address to GPIO (general purpose input output)
-//     // Wire.beginTransmission(0x28);
-//     // Wire.write(0x0A);
-//     // Wire.endTransmission(false);
+void RxIRQ_ISR() {
+    // set address to GPIO (general purpose input output)
+    Wire.beginTransmission(0x28);
+    Wire.write(0x0A);
+    Wire.endTransmission(false);
 
-//     // // read output from GPIO
-//     // Wire.requestFrom(0x28, 1, true);
-//     // int val = Wire.read();
-//     // val = (val >> PINA0) & 0x01; // assigns val with the value from the sensor's interrupt pin
+    // read output from GPIO
+    Wire.requestFrom(0x28, 1, true);
+    int val = Wire.read();
+    val = (val >> PINA0) & 0x01; // assigns val with the value from the sensor's interrupt pin
 
-//     // // checks if the interrupt is from the RFID sensor
-//     // if (val == 1) {
-//     //     readRFIDTag();
-//     // }
+    // checks if the interrupt is from the RFID sensor
+    if (val == 1) {
+        readRFIDTag();
+    }
 
-// }
+}
 
 void readRFIDTag() {
     Serial.begin(9600);
