@@ -31,19 +31,20 @@ void initRFID(){
     writeRegister(0x02, 0x01);
     // ComIEnReg register, Enables RxIRQ interrupt
 
-    pinMode(PINA0, INPUT_PULLUP);
-    // sets PINA0 as the RxIRQ_PIN
+    pinMode(PORTD3, INPUT_PULLUP);
+    //sets PINA0 as the RxIRQ_PIN
     
-    //attachInterrupt(digitalPinToInterrupt(PINA0), RxIRQ_ISR, RISING);
+    attachInterrupt(PORTD3, RxIRQ_ISR, FALLING);
     //data direction
-DDRD &= ~(1 << PD3);
-//port
-PORTD |= (1 << PD3);
+// DDRD &= ~(1 << PD3);
+// //port
+// PORTD |= (1 << PD3);
 
-//Set the external interrupt control register A to 11 for INT2
-EICRA |= (1<<ISC30) | (1<<ISC31);
-//turn on INT2 in the external interrupt mask register to enable it
-EIMSK |= (1<<INT3);
+// //Set the external interrupt control register A to 11 for INT2
+// EICRA |=  (1<<ISC31);
+// EICRA &= ~(1<<ISC30);
+// //turn on INT2 in the external interrupt mask register to enable it
+// EIMSK |= (1<<INT3);
 
 
 }
@@ -58,10 +59,11 @@ void RxIRQ_ISR() {
     // read output from GPIO
     Wire.requestFrom(0x28, 1, true);
     int val = Wire.read();
-    val = (val >> PINA0) & 0x01; // assigns val with the value from the sensor's interrupt pin
+    val = (val >> PORTD3) & 0x01; // assigns val with the value from the sensor's interrupt pin
 
     // checks if the interrupt is from the RFID sensor
     if (val == 1) {
+        Serial.print("T2");
         readRFIDTag();
     }
 

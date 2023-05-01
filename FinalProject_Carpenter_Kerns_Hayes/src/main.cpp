@@ -34,6 +34,8 @@ states matrix = incoming;
 //define global variable for debounce states
 volatile debounce dbState = wait_press;
 
+volatile unsigned int num = 0;
+
 
 int main(){
   Serial.begin(9600);  
@@ -43,7 +45,7 @@ int main(){
   initTimer1();
   initPWMTimer3();
   initSwitchPD2();
-  attachInterrupt(digitalPinToInterrupt(PIND2), button_pressedISR, RISING);
+  //attachInterrupt(digitalPinToInterrupt(PIND2), button_pressedISR, RISING);
 
   initI2C();
   SPI_MASTER_Init();
@@ -58,8 +60,6 @@ write_execute(0x0F, 0x00); //display test register - set to normal operation
 
 
 	while (1) {
-    Serial.print("Check");
-    displayIncoming();
 
     switch (matrix){
       case incoming:  // object is entering into the inventory
@@ -108,34 +108,22 @@ write_execute(0x0F, 0x00); //display test register - set to normal operation
 
 
 //Pin change interrupt: INT0 uses PORTD0
-ISR(INT3_vect){
-   // set address to GPIO (general purpose input output)
-    Wire.beginTransmission(0x28);
-    Wire.write(0x0A);
-    Wire.endTransmission(false);
+// ISR(INT3_vect){
+//   Serial.println("Tag");
+//    readRFIDTag();
+// }
+//   ISR(INT2_vect){
 
-    // read output from GPIO
-    Wire.requestFrom(0x28, 1, true);
-    int val = Wire.read();
-    val = (val >> PINA0) & 0x01;
-
-    // checks if the interrupt is from the RFID sensor
-    if (val == 1) {
-        readRFIDTag();
-    }
-}
-  ISR(INT2_vect){
-
-    //if INT0 is triggered for press
-if (dbState == wait_press){
-  dbState = debounce_press;
-}
-//if INT0 is triggered for release
-else if (dbState == wait_release){
-  //change motor state to counting
-  dbState = debounce_release;
-}
-}
+//     //if INT0 is triggered for press
+// if (dbState == wait_press){
+//   dbState = debounce_press;
+// }
+// //if INT0 is triggered for release
+// else if (dbState == wait_release){
+//   //change motor state to counting
+//   dbState = debounce_release;
+// }
+// }
   
 
 
