@@ -41,13 +41,15 @@ int main(){
   Serial.begin(9600);  
   sei(); // Enable global interrupts.
 
-  initRFID();
+  
   initTimer1();
   initPWMTimer3();
   initSwitchPD2();
   //attachInterrupt(digitalPinToInterrupt(PIND2), button_pressedISR, RISING);
 
   initI2C();
+  initRFID();
+  Serial.println("Ta");
   SPI_MASTER_Init();
 
 
