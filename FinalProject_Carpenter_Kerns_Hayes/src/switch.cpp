@@ -24,14 +24,11 @@ EICRA |= (1<<ISC20) | (1<<ISC21);
 //turn on INT2 in the external interrupt mask register to enable it
 EIMSK |= (1<<INT2);
 
-attachInterrupt(digitalPinToInterrupt(PIND2), button_pressed, RISING);
 
 
 
-}
-
-void button_pressed{
 
 }
+
 
 

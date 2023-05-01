@@ -25,6 +25,7 @@
 /*
  * Define a set of states that can be used in the state machine using an enum.
  */
+void button_pressedISR();
 typedef enum {incoming, outgoing} states;
 states matrix = incoming;
 
@@ -32,6 +33,7 @@ states matrix = incoming;
   typedef enum {wait_press, debounce_press, wait_release, debounce_release} debounce;
 //define global variable for debounce states
 volatile debounce dbState = wait_press;
+
 
 int main(){
   Serial.begin(9600);  
@@ -41,6 +43,7 @@ int main(){
   initTimer1();
   initPWMTimer3();
   initSwitchPD2();
+  attachInterrupt(digitalPinToInterrupt(PIND2), button_pressedISR, RISING);
 
   initI2C();
   SPI_MASTER_Init();
@@ -99,6 +102,17 @@ int main(){
   return 0;
 }
 
+void button_pressedISR(){
+//if INT0 is triggered for press
+if (dbState == wait_press){
+  dbState = debounce_press;
+}
+//if INT0 is triggered for release
+else if (dbState == wait_release){
+  //change motor state to counting
+  dbState = debounce_release;
+}
+}
 
 // Pin change interrupt: INT0 uses PORTD0
 // ISR(INT0_vect){
