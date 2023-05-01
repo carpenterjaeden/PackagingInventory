@@ -39,6 +39,7 @@ void initRFID(){
 }
 
 void RxIRQ_ISR() {
+    Serial.print("T1");
     // set address to GPIO (general purpose input output)
     Wire.beginTransmission(0x28);
     Wire.write(0x0A);

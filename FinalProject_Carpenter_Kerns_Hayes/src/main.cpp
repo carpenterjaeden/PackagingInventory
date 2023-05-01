@@ -52,6 +52,7 @@ int main(){
 
 
 	while (1) {
+    Serial.print("Check");
     displayIncoming();
 
     switch (matrix){

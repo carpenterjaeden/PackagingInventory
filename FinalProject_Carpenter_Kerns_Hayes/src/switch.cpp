@@ -8,6 +8,7 @@
 //----------------------------------------------------------------------//
 
 #include "switch.h"
+#include <Arduino.h>
 #include <avr/io.h>
 
 /*
@@ -30,7 +31,7 @@ attachInterrupt(digitalPinToInterrupt(PIND2), button_pressed, RISING);
 
 }
 
-void button_pressed{
+void button_pressed() {
 
 }
 
