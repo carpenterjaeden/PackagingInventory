@@ -20,6 +20,7 @@
 #include "spi2.h"
 #include "RFID.h"
 #include <MFRC522.h>
+#include "lcd.h"
  
 #define SS_PIN PORTB0
 #define RST_PIN PORTH6
