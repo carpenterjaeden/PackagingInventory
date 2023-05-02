@@ -85,9 +85,13 @@ write_execute(0x0F, 0x00); //display test register - set to normal operation
 
   if (mfrc522.PICC_IsNewCardPresent()) {
     if (cardState == cardNotPresent){
-    num++;
-    Serial.println(num);
-    cardState = cardPresent;
+      if (matrix == incoming)
+        num++;
+      else
+        num--;
+        
+      Serial.println(num);
+      cardState = cardPresent;
     } 
 
 	}
