@@ -7,12 +7,23 @@
 // 
 // 
 //----------------------------------------------------------------------//
-
+/*
+ * Pin layout should be as follows for the MFRC522 board:
+ * Signal     Pin              Pin               
+ *            Arduino Mega     MFRC522 board
+ * -----------------------------------------------
+ * Reset      46               RST
+ * SPI SS     53               SDA
+ * SPI MOSI   51               MOSI
+ * SPI MISO   50               MISO
+ * SPI SCK    52               SCK
+ *
+ * 
+ */
 
 
 #include <Arduino.h>
 #include <avr/io.h>
-#include <Wire.h>
 #include "switch.h"
 #include "timer.h"
 #include "pwm.h"
@@ -21,15 +32,15 @@
 #include "RFID.h"
 #include <MFRC522.h>
  
-#define SS_PIN PORTB0
-#define RST_PIN PORTH6
+#define SS_PIN 53
+#define RST_PIN 46
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 // defines
 
 
-/*
- * Define a set of states that can be used in the state machine using an enum.
- */
+
+// Define a set of states that can be used in the state machine using an enum.
+ 
 typedef enum {incoming, outgoing} states;
 states matrix = incoming;
 
@@ -45,7 +56,8 @@ unsigned int num = 0;
 int main(){
   Serial.begin(9600);  
   sei(); // Enable global interrupts.
-
+  SPI_MASTER_Init();
+	mfrc522.PCD_Init();	// Init MFRC522 card
   
   initTimer1();
   initPWMTimer3();
