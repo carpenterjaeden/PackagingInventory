@@ -41,12 +41,14 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 
 // Define a set of states that can be used in the state machine using an enum.
- 
 typedef enum {incoming, outgoing} states;
 states matrix = incoming;
 
+//states that make sure each card is read only once before it it moved from the sensor
+typedef enum {cardPresent, cardNotPresent} cardCheck;
+cardCheck cardState = cardNotPresent;
 
-  typedef enum {wait_press, debounce_press, wait_release, debounce_release} debounce;
+typedef enum {wait_press, debounce_press, wait_release, debounce_release} debounce;
 //define global variable for debounce states
 volatile debounce dbState = wait_press;
 
@@ -82,9 +84,21 @@ write_execute(0x0F, 0x00); //display test register - set to normal operation
 	while (1) {
 
 
-    if (mfrc522.PICC_IsNewCardPresent()){
-      num++;
-    }
+  if (mfrc522.PICC_IsNewCardPresent()) {
+    if (cardState == cardNotPresent){
+      if (matrix == incoming)
+        num++;
+      else
+        num--;
+        
+      Serial.println(num);
+      cardState = cardPresent;
+    } 
+
+	}
+  else if(!mfrc522.PICC_IsNewCardPresent()){
+    cardState = cardNotPresent;
+  }
 
     switch (matrix){
       case incoming:  // object is entering into the inventory
