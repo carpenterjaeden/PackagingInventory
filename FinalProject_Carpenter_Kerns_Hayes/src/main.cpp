@@ -56,32 +56,22 @@ unsigned int num = 0;
 
 
 
-int main(){
+void setup(){
+
   Serial.begin(9600);  
   sei(); // Enable global interrupts.
   SPI_MASTER_Init();
 	mfrc522.PCD_Init();	// Init MFRC522 card
-  
   initTimer1();
-  initPWMTimer3();
   initSwitchPD2();
-  //attachInterrupt(digitalPinToInterrupt(PIND2), button_pressedISR, RISING);
 
-  initI2C();
-  initRFID();
   Serial.println("Ta");
-  SPI_MASTER_Init();
 
- // attachInterrupt(digitalPinToInterrupt(PINA0), ISR, RISING);
-    // attaches PINA0 to trigger the RxIRQ_ISR() function
-write_execute(0x0A, 0x08); //brightness control
-write_execute(0x0B, 0x07); //scanning all rows and columns
-write_execute(0x0C, 0x01); //set shutdown register to normal operation (0x01)
-write_execute(0x0F, 0x00); //display test register - set to normal operation
+}
 
 
 
-	while (1) {
+void loop() {
 
 
   if (mfrc522.PICC_IsNewCardPresent()) {
@@ -90,9 +80,8 @@ write_execute(0x0F, 0x00); //display test register - set to normal operation
         num++;
       else
         num--;
-        
-      Serial.println(num);
-      cardState = cardPresent;
+        Serial.println(num);
+        cardState = cardPresent;
     } 
 
 	}
@@ -142,8 +131,6 @@ write_execute(0x0F, 0x00); //display test register - set to normal operation
   }
 
 	}
-  return 0;
-}
 
 
 
