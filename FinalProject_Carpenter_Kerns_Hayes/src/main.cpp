@@ -91,10 +91,18 @@ void loop() {
 
     switch (matrix){
       case incoming:  // object is entering into the inventory
-        displayIncoming();
+        moveCursor(0,0);
+        writeString("Current Mode: Incoming");
+        moveCursor(1,0);
+        writeString("Inventory: ");
+        writeNum(num);
       break;
       case outgoing: // object is being removed from inventory
-        displayOutgoing();
+        moveCursor(0,0);
+        writeString("Current Mode: Outgoing");
+        moveCursor(1,0);
+        writeString("Inventory: ");
+        writeNum(num);
       break;
       default:
         matrix = incoming;
