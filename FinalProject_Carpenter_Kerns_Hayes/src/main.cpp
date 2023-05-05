@@ -73,7 +73,6 @@ void setup(){
 
 
 void loop() {
-  //Serial.println("reached");
   if (mfrc522.PICC_IsNewCardPresent()) {
     if (cardState == cardNotPresent){
       if (matrix == incoming) num++;
@@ -89,18 +88,18 @@ void loop() {
 
     switch (matrix){
       case incoming:  // object is entering into the inventory
-        // moveCursor(0,0);
-        // writeString("Current Mode: Incoming");
-        // moveCursor(1,0);
-        // writeString("Inventory: ");
-        // writeNum(num);
+        moveCursor(0,0);
+        writeString("Incoming");
+        moveCursor(1,0);
+        writeString("Amount: ");
+        writeNum(num);
       break;
       case outgoing: // object is being removed from inventory
-        // moveCursor(0,0);
-        // writeString("Current Mode: Outgoing");
-        // moveCursor(1,0);
-        // writeString("Inventory: ");
-        // writeNum(num);
+        moveCursor(0,0);
+        writeString("Outgoing");
+        moveCursor(1,0);
+        writeString("Amount: ");
+        writeNum(num);
       break;
       default:
         matrix = incoming;

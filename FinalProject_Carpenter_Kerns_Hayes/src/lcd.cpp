@@ -34,9 +34,9 @@ void fourBitCommandWithDelay(unsigned char data, unsigned int delay){
   PORTA = (PORTA & 0xF0) | (data & 0x0F);
   PORTB &= ~(1 << PORTB6); // RS pin
   PORTB |= (1 << PORTB4); // E pin
-  delayMs(1);
+  delayUs(1);
   PORTB &= ~(1 << PORTB4);
-  delayMs(delay);
+  delayUs(delay);
 }
 
 
@@ -56,13 +56,13 @@ void eightBitCommandWithDelay(unsigned char command, unsigned int delay){
   PORTA = (PORTA & 0xF0) | ((command >> 4) & 0x0F);
   PORTB &= ~(1 << PORTB6);
   PORTB |= (1 << PORTB4);
-  delayMs(1);
+  delayUs(1);
   PORTB &= ~(1 << PORTB4);
   PORTA = (PORTA & 0xF0) | (command & 0x0F);
   PORTB |= (1 << PORTB4);
-  delayMs(1);
+  delayUs(1);
   PORTB &= ~(1 << PORTB4);
-  delayMs(delay);
+  delayUs(delay);
 }
 
 
@@ -80,13 +80,13 @@ void writeCharacter(unsigned char character){
   PORTA = ((character >> 4) | 0x0F) | (PORTA | 0xF0);
   PORTB |= (1 << PORTB6);
   PORTB |= (1 << PORTB4);
-  delayMs(1);
+  delayUs(1);
   PORTB &= ~(1 << PORTB4);
   PORTA = (PORTA & 0xF0) | (character & 0x0F);
   PORTB |= (1 << PORTB4);
-  delayMs(1);
+  delayUs(1);
   PORTB &= ~(1 << PORTB4);
-  delayMs(46);
+  delayUs(46);
 }
 
 
@@ -98,7 +98,7 @@ void writeCharacter(unsigned char character){
  * that this should just call writeCharacter multiple times.
  */
 void writeString(const char *string){
-  while(*string != '/0') {
+  while(*string != '\0') {
     writeCharacter(*string);
     string++;
   }
@@ -130,7 +130,7 @@ void moveCursor(unsigned char x, unsigned char y){
  */
 void initLCDProcedure(){
   // Delay 15 milliseconds
-  delayMs(50);
+  delayUs(50000);
   // Write 0b0011 to DB[7:4] and delay 4100 microseconds
   fourBitCommandWithDelay(0b0011, 4100);
   // Write 0b0011 to DB[7:4] and delay 100 microseconds

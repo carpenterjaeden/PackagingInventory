@@ -73,7 +73,7 @@ void delayMs(unsigned int delay){
     while (delayCnt < delay) {
         if (TIFR0 & (1 << OCF0A)) {
             delayCnt++;
-            TIFRO |= (1 << OCF0A);
+            TIFR0 |= (1 << OCF0A);
         }
     }
 }
