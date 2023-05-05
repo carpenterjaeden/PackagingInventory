@@ -77,7 +77,7 @@ void eightBitCommandWithDelay(unsigned char command, unsigned int delay){
  */
 void writeCharacter(unsigned char character){
 
-  PORTA = ((character >> 4) | 0x0F) | (PORTA | 0xF0);
+  PORTA = ((character >> 4) & 0x0F) | (PORTA & 0xF0);
   PORTB |= (1 << PORTB6);
   PORTB |= (1 << PORTB4);
   delayUs(1);
