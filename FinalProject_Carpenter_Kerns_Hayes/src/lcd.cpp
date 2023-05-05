@@ -104,6 +104,10 @@ void writeString(const char *string){
   }
 }
 
+void writeNum(unsigned int num) {
+  char toPrint = '0' + num;
+  writeCharacter(toPrint);
+}
 
 
 /*
