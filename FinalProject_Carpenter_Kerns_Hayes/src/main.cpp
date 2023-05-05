@@ -64,6 +64,7 @@ void setup(){
 	mfrc522.PCD_Init();	// Init MFRC522 card
   initTimer1();
   initSwitchPD2();
+  initLCD();
 
   Serial.println("Ta");
 
@@ -72,14 +73,11 @@ void setup(){
 
 
 void loop() {
-
-
+  //Serial.println("reached");
   if (mfrc522.PICC_IsNewCardPresent()) {
     if (cardState == cardNotPresent){
-      if (matrix == incoming)
-        num++;
-      else
-        num--;
+      if (matrix == incoming) num++;
+      else num--;
         Serial.println(num);
         cardState = cardPresent;
     } 
@@ -91,18 +89,18 @@ void loop() {
 
     switch (matrix){
       case incoming:  // object is entering into the inventory
-        moveCursor(0,0);
-        writeString("Current Mode: Incoming");
-        moveCursor(1,0);
-        writeString("Inventory: ");
-        writeNum(num);
+        // moveCursor(0,0);
+        // writeString("Current Mode: Incoming");
+        // moveCursor(1,0);
+        // writeString("Inventory: ");
+        // writeNum(num);
       break;
       case outgoing: // object is being removed from inventory
-        moveCursor(0,0);
-        writeString("Current Mode: Outgoing");
-        moveCursor(1,0);
-        writeString("Inventory: ");
-        writeNum(num);
+        // moveCursor(0,0);
+        // writeString("Current Mode: Outgoing");
+        // moveCursor(1,0);
+        // writeString("Inventory: ");
+        // writeNum(num);
       break;
       default:
         matrix = incoming;
